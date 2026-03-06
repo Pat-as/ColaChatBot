@@ -23,6 +23,7 @@ app.config["MONGO_URI"] = os.environ.get('MY_DB_URL')
 mongo = PyMongo(app)
 
 # ✅ ดึงค่าจาก Environment Variables ของ Vercel
+AI_API_KEY = os.environ.get('AI_API_KEY')
 AI_BASE_URL = "https://gen.ai.kku.ac.th/api/v1"
 SAVE_CHAT_ENABLED = False
 
@@ -262,14 +263,10 @@ def ask_ai():
         prompt = f"ระบบกำลังทดสอบ (ยังไม่มีข้อมูลใน DB)\nคำถามคือ: {user_input}"
 
     try:
-        current_ai_api_key = os.environ.get('AI_API_KEY')
-        if not current_ai_api_key:
-            return jsonify({"reply": "AI ยังไม่ได้ตั้งค่า API Key ในระบบ (Error: Missing Key)"})
-
         # ✅ เรียกใช้ Key จาก Vercel (ต้อง Redeploy เพื่อให้ค่าอัปเดต)
         res = requests.post(
             f"{AI_BASE_URL}/chat/completions", 
-            headers={"Authorization": f"Bearer {current_ai_api_key}"}, 
+            headers={"Authorization": f"Bearer {AI_API_KEY}"}, 
             json={
                 "model": "gemini-2.5-flash", 
                 "messages": [{"role": "user", "content": prompt}]
