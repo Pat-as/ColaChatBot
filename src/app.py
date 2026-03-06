@@ -271,7 +271,7 @@ def ask_ai():
             f"{AI_BASE_URL}/chat/completions", 
             headers={"Authorization": f"Bearer {current_ai_api_key}"}, 
             json={
-                "model": "gemini-2.0-flash", 
+                "model": "gemini-2.5-flash", 
                 "messages": [{"role": "user", "content": prompt}]
             }, 
             timeout=30
